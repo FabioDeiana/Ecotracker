@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Table(name = "daily_logs")
