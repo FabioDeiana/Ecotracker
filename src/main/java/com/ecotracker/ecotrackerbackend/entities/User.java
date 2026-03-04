@@ -1,14 +1,18 @@
 package com.ecotracker.ecotrackerbackend.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.UUID;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -42,6 +46,21 @@ public class User {
         this.password = password;
         this.role = role;
         this.createdAt = LocalDateTime.now();
+    }
+
+    // metodo richiesto da UserDetails
+    // ritorna i ruoli dell'utente come GrantedAuthority
+    // Spring Security lo usa per controllare i permessi
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    // metodo richiesto da UserDetails
+    // Spring Security usa questo per identificare l'utente
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     // Getter e Setter
