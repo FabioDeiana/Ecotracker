@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -47,6 +48,7 @@ public class UserService {
         user.setEmail(payload.getEmail());
         user.setPassword(passwordEncoder.encode(payload.getPassword()));
         user.setRole(Role.USER);
+        user.setCreatedAt(LocalDateTime.now());
 
         return userRepository.save(user);
     }

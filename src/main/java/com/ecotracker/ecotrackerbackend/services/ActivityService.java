@@ -25,6 +25,24 @@ public class ActivityService {
     private String climatiqApiKey;
 
     // activity_id di Climatiq per ogni tipo di attività
+    private static final Map<ActivityType, String> ACTIVITY_VALUE_PARAMS = Map.of(
+            ActivityType.CAR, "distance",
+            ActivityType.MEAT, "weight",
+            ActivityType.ELECTRICITY, "energy",
+            ActivityType.FLIGHT, "distance",
+            ActivityType.HEATING, "energy"
+    );
+
+    // unità di misura per ogni tipo di attività
+    private static final Map<ActivityType, String> ACTIVITY_UNIT_PARAMS = Map.of(
+            ActivityType.CAR, "distance_unit",
+            ActivityType.MEAT, "weight_unit",
+            ActivityType.ELECTRICITY, "energy_unit",
+            ActivityType.FLIGHT, "distance_unit",
+            ActivityType.HEATING, "energy_unit"
+    );
+
+    // activity_id di Climatiq per ogni tipo di attività
     private static final Map<ActivityType, String> ACTIVITY_IDS = Map.of(
             ActivityType.CAR, "passenger_vehicle-vehicle_type_car-fuel_source_petrol-engine_size_na-vehicle_age_na-vehicle_weight_na",
             ActivityType.MEAT, "food-type_beef_dishes",
@@ -53,11 +71,12 @@ public class ActivityService {
         // costruisco il body della richiesta
         Map<String, Object> requestBody = Map.of(
                 "emission_factor", Map.of(
-                        "activity_id", ACTIVITY_IDS.get(type)
+                        "activity_id", ACTIVITY_IDS.get(type),
+                        "data_version", "31.31"
                 ),
                 "parameters", Map.of(
-                        "value", value,
-                        "value_unit", ACTIVITY_UNITS.get(type)
+                        ACTIVITY_VALUE_PARAMS.get(type), value,
+                        ACTIVITY_UNIT_PARAMS.get(type), ACTIVITY_UNITS.get(type)
                 )
         );
 

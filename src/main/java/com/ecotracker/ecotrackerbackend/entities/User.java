@@ -1,5 +1,6 @@
 package com.ecotracker.ecotrackerbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +25,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -33,6 +35,7 @@ public class User implements UserDetails {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<DailyLog> dailyLogs;
 
@@ -51,6 +54,7 @@ public class User implements UserDetails {
     // metodo richiesto da UserDetails
     // ritorna i ruoli dell'utente come GrantedAuthority
     // Spring Security lo usa per controllare i permessi
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -59,6 +63,7 @@ public class User implements UserDetails {
     // metodo richiesto da UserDetails
     // Spring Security usa questo per identificare l'utente
     @Override
+    @JsonIgnore
     public String getUsername() {
         return email;
     }
@@ -82,4 +87,22 @@ public class User implements UserDetails {
 
     public List<DailyLog> getDailyLogs() { return dailyLogs; }
     public void setDailyLogs(List<DailyLog> dailyLogs) { this.dailyLogs = dailyLogs; }
+
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() { return true; }
 }

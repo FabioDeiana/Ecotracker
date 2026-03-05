@@ -1,5 +1,6 @@
 package com.ecotracker.ecotrackerbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public class DailyLog {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "dailyLog", cascade = CascadeType.ALL)
     private List<Activity> activities;
 

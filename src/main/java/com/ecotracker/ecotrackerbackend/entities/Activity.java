@@ -1,5 +1,6 @@
 package com.ecotracker.ecotrackerbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class Activity {
     @Column(name = "co2_emission", nullable = false)
     private double co2Emission;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "daily_log_id", nullable = false)
     private DailyLog dailyLog;
