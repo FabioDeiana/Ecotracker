@@ -56,7 +56,7 @@ public class ActivityService {
             ActivityType.CAR, "km",
             ActivityType.MEAT, "kg",
             ActivityType.ELECTRICITY, "kWh",
-            ActivityType.FLIGHT, "passenger-km",
+            ActivityType.FLIGHT, "km",
             ActivityType.HEATING, "kWh"
     );
 
