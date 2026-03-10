@@ -18,6 +18,7 @@ public class JwtUtils {
     public String generateToken(User user) {
         return Jwts.builder()
                 .subject(user.getId().toString())
+                .claim("role", user.getRole().name())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 ore
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
