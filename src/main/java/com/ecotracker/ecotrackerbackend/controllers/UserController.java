@@ -46,6 +46,28 @@ public class UserController {
         return currentUser;
     }
 
+    // PUT /users/me - lo user aggiorna il proprio profilo
+    @PutMapping("/me")
+    public User updateMe(@AuthenticationPrincipal User currentUser,
+                         @RequestBody @Validated RegisterRequest payload,
+                         BindingResult validateResult) {
+        if (validateResult.hasErrors()) {
+            List<String> errorList = validateResult.getFieldErrors()
+                    .stream()
+                    .map(fieldError -> fieldError.getDefaultMessage())
+                    .toList();
+            throw new ValidationException(errorList);
+        }
+        return userService.findByIdAndUpdate(currentUser.getId(), payload);
+    }
+
+    // DELETE /users/me - lo user elimina il proprio account
+    @DeleteMapping("/me")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMe(@AuthenticationPrincipal User currentUser) {
+        userService.findByIdAndDelete(currentUser.getId());
+    }
+
     // GET /users/{userId} - ritorna un utente per id (solo ADMIN)
     @GetMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
