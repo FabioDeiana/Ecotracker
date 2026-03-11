@@ -5,6 +5,7 @@ import com.ecotracker.ecotrackerbackend.entities.User;
 import com.ecotracker.ecotrackerbackend.exceptions.UnauthorizedException;
 import com.ecotracker.ecotrackerbackend.services.DailyLogService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
@@ -45,6 +46,13 @@ public class DailyLogController {
             throw new UnauthorizedException("Non sei autorizzato a vedere questo log");
         }
         return log;
+    }
+
+    // GET /logs/all - ritorna tutti i log di tutti gli utenti (solo ADMIN)
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<DailyLog> getAll() {
+        return dailyLogService.getAll();
     }
 
     @DeleteMapping("/{logId}")

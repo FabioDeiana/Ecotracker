@@ -38,6 +38,11 @@ public class DailyLogService {
         return dailyLogRepository.findByUserIdAndDate(userId, date);
     }
 
+    // restituisce tutti i log di tutti gli utenti
+    public List<DailyLog> getAll() {
+        return dailyLogRepository.findAll();
+    }
+
     // SAVE: crea un nuovo log giornaliero per l'utente con CO2 iniziale a 0
     public DailyLog save(UUID userId) {
         // recupero l'utente dal DB
