@@ -1,5 +1,6 @@
 package com.ecotracker.ecotrackerbackend.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -36,7 +37,15 @@ public class SecurityConfig {
         httpSecurity.formLogin(fl -> fl.disable());
         httpSecurity.csrf(csrf -> csrf.disable());
         httpSecurity.sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers("/**").permitAll());
+        httpSecurity.authorizeHttpRequests(request -> request
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated());
+        // restituisce 401 invece di 403 quando manca il token
+        httpSecurity.exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Non autorizzato");
+                })
+        );
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
