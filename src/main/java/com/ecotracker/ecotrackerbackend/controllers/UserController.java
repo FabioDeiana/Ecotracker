@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -98,5 +100,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID userId) {
         userService.findByIdAndDelete(userId);
+    }
+
+    // PATCH /users/me/avatar - aggiorna l'avatar dell'utente loggato
+    @PatchMapping("/me/avatar")
+    public User updateAvatar(@AuthenticationPrincipal User currentUser,
+                             @RequestParam("file") MultipartFile file) {
+        return userService.updateAvatar(currentUser.getId(), file);
     }
 }

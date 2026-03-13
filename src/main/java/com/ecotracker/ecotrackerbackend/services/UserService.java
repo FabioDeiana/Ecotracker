@@ -5,10 +5,15 @@ import com.ecotracker.ecotrackerbackend.entities.User;
 import com.ecotracker.ecotrackerbackend.exceptions.NotFoundException;
 import com.ecotracker.ecotrackerbackend.payloads.RegisterRequest;
 import com.ecotracker.ecotrackerbackend.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.Map;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,6 +23,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${cloudinary.cloud-name}")
+    private String cloudinaryCloudName;
+
+    @Value("${cloudinary.api-key}")
+    private String cloudinaryApiKey;
+
+    @Value("${cloudinary.api-secret}")
+    private String cloudinaryApiSecret;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -71,5 +85,26 @@ public class UserService {
     public void findByIdAndDelete(UUID id) {
         User found = this.getById(id);
         userRepository.delete(found);
+    }
+
+
+    // avatar
+    public User updateAvatar(UUID id, MultipartFile file) {
+        User found = this.getById(id);
+
+        try {
+            Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                    "cloud_name", cloudinaryCloudName,
+                    "api_key", cloudinaryApiKey,
+                    "api_secret", cloudinaryApiSecret
+            ));
+
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            found.setAvatarUrl((String) uploadResult.get("secure_url"));
+            return userRepository.save(found);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante il caricamento dell'avatar: " + e.getMessage());
+        }
     }
 }

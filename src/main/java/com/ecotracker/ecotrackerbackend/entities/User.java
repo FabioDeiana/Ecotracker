@@ -90,6 +90,12 @@ public class User implements UserDetails {
 
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
+    public String getAvatarUrl() { return avatarUrl; }
+    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     @Override
     @JsonIgnore
     public boolean isAccountNonExpired() { return true; }
