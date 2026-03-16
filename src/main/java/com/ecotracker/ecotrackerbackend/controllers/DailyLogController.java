@@ -65,4 +65,10 @@ public class DailyLogController {
         }
         dailyLogService.findByIdAndDelete(logId);
     }
+
+    // GET /logs/stats/media — restituisce la media CO₂ giornaliera globale
+    @GetMapping("/stats/media")
+    public double getMediaGlobale() {
+        return dailyLogService.getMediaGlobale();
+    }
 }

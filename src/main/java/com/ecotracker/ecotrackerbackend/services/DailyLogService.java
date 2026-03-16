@@ -72,4 +72,18 @@ public class DailyLogService {
         DailyLog found = this.getById(id);
         dailyLogRepository.delete(found);
     }
+
+    // Calcola la media CO₂ giornaliera su tutti gli utenti per oggi
+    public double getMediaGlobale() {
+        LocalDate oggi = LocalDate.now();
+        List<DailyLog> logsOggi = dailyLogRepository.findAll()
+                .stream()
+                .filter(log -> log.getDate().equals(oggi))
+                .toList();
+        if (logsOggi.isEmpty()) return 0;
+        double totale = logsOggi.stream()
+                .mapToDouble(DailyLog::getTotalCo2)
+                .sum();
+        return totale / logsOggi.size();
+    }
 }
