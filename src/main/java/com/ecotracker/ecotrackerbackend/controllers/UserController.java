@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -107,5 +108,13 @@ public class UserController {
     public User updateAvatar(@AuthenticationPrincipal User currentUser,
                              @RequestParam("file") MultipartFile file) {
         return userService.updateAvatar(currentUser.getId(), file);
+    }
+
+    // PATCH /users/{id}/role — cambia il ruolo di un utente (solo ADMIN)
+    @PatchMapping("/{id}/role")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User changeRole(@PathVariable UUID id, @RequestBody Map<String, String> body) {
+        String nuovoRuolo = body.get("role");
+        return userService.changeRole(id, nuovoRuolo);
     }
 }

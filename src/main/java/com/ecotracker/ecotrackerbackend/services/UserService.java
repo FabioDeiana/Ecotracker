@@ -107,4 +107,11 @@ public class UserService {
             throw new RuntimeException("Errore durante il caricamento dell'avatar: " + e.getMessage());
         }
     }
+
+    // Cambia il ruolo di un utente
+    public User changeRole(UUID id, String nuovoRuolo) {
+        User found = this.getById(id);
+        found.setRole(Role.valueOf(nuovoRuolo));
+        return userRepository.save(found);
+    }
 }
