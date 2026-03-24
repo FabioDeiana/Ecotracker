@@ -29,7 +29,10 @@ public class SecurityConfig {
     public SecurityFilterChain sfc(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors(cors -> cors.configurationSource(request -> {
             var config = new org.springframework.web.cors.CorsConfiguration();
-            config.setAllowedOrigins(List.of("http://localhost:5173"));
+            config.setAllowedOrigins(List.of(
+                    "http://localhost:5173",
+                    "https://eco-tracker-frontend-app.vercel.app"
+            ));
             config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
             config.setAllowedHeaders(List.of("*"));
             return config;
