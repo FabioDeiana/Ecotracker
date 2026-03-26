@@ -13,6 +13,9 @@ public class GreenTipRequest {
     @NotBlank(message = "La descrizione è obbligatoria")
     private String description;
 
+    private String titleEn;
+    private String descriptionEn;
+
     @NotNull(message = "La categoria è obbligatoria")
     private ActivityType category;
 
@@ -33,6 +36,12 @@ public class GreenTipRequest {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getTitleEn() { return titleEn; }
+    public void setTitleEn(String titleEn) { this.titleEn = titleEn; }
+
+    public String getDescriptionEn() { return descriptionEn; }
+    public void setDescriptionEn(String descriptionEn) { this.descriptionEn = descriptionEn; }
 
     public ActivityType getCategory() { return category; }
     public void setCategory(ActivityType category) { this.category = category; }

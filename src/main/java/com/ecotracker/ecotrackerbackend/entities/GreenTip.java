@@ -18,6 +18,12 @@ public class GreenTip {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "title_en")
+    private String titleEn;
+
+    @Column(name = "description_en", columnDefinition = "TEXT")
+    private String descriptionEn;
+
     @Enumerated(EnumType.STRING)
     private ActivityType category;
 
@@ -40,6 +46,12 @@ public class GreenTip {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getTitleEn() { return titleEn; }
+    public void setTitleEn(String titleEn) { this.titleEn = titleEn; }
+
+    public String getDescriptionEn() { return descriptionEn; }
+    public void setDescriptionEn(String descriptionEn) { this.descriptionEn = descriptionEn; }
 
     public ActivityType getCategory() { return category; }
     public void setCategory(ActivityType category) { this.category = category; }

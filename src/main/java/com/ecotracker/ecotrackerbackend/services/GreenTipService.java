@@ -36,6 +36,8 @@ public class GreenTipService {
         GreenTip greenTip = new GreenTip();
         greenTip.setTitle(payload.getTitle());
         greenTip.setDescription(payload.getDescription());
+        greenTip.setTitleEn(payload.getTitleEn());
+        greenTip.setDescriptionEn(payload.getDescriptionEn());
         greenTip.setCategory(payload.getCategory());
         greenTip.setCo2SavedEstimate(payload.getCo2SavedEstimate());
 
@@ -49,6 +51,8 @@ public class GreenTipService {
 
         found.setTitle(payload.getTitle());
         found.setDescription(payload.getDescription());
+        found.setTitleEn(payload.getTitleEn());
+        found.setDescriptionEn(payload.getDescriptionEn());
         found.setCategory(payload.getCategory());
         found.setCo2SavedEstimate(payload.getCo2SavedEstimate());
 
