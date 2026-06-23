@@ -39,6 +39,8 @@ public class SecurityConfig {
         httpSecurity.sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.authorizeHttpRequests(request -> request
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/tips").permitAll()
+                .requestMatchers("/tips/category").permitAll()
                 .anyRequest().authenticated());
         // restituisce 401 invece di 403 quando manca il token
         httpSecurity.exceptionHandling(ex -> ex
