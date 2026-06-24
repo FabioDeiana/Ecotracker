@@ -71,4 +71,10 @@ public class DailyLogController {
     public double getMediaGlobale() {
         return dailyLogService.getMediaGlobale();
     }
+
+    // GET /logs/me/streak — restituisce la streak dell'utente loggato
+    @GetMapping("/me/streak")
+    public java.util.Map<String, Object> getStreak(@AuthenticationPrincipal User currentUser) {
+        return dailyLogService.getStreak(currentUser.getId());
+    }
 }

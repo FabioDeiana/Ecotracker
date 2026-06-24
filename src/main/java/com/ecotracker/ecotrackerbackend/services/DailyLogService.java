@@ -86,4 +86,32 @@ public class DailyLogService {
                 .sum();
         return totale / logsOggi.size();
     }
+
+    // Calcola la streak di giorni consecutivi con almeno un log per l'utente
+    public java.util.Map<String, Object> getStreak(UUID userId) {
+        List<DailyLog> logs = dailyLogRepository.findByUserId(userId);
+        LocalDate oggi = LocalDate.now();
+
+        java.util.Set<LocalDate> dateConLog = logs.stream()
+                .map(DailyLog::getDate)
+                .collect(java.util.stream.Collectors.toSet());
+
+        // Calcoliamo la streak partendo da oggi
+        int streak = 0;
+        LocalDate giorno = oggi;
+        while (dateConLog.contains(giorno)) {
+            streak++;
+            giorno = giorno.minusDays(1);
+        }
+
+        boolean oggiHaLog = dateConLog.contains(oggi);
+        LocalDate ieri = oggi.minusDays(1);
+        boolean atRisk = !oggiHaLog && dateConLog.contains(ieri) && streak > 0;
+
+        java.util.Map<String, Object> result = new java.util.HashMap<>();
+        result.put("streak", streak);
+        result.put("atRisk", atRisk);
+        result.put("oggiHaLog", oggiHaLog);
+        return result;
+    }
 }
